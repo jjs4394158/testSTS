@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Member">
+
+	<select id="idCheck" parameterType="String" resultType="String">
+		SELECT MID FROM MEMBERDTO WHERE MID = #{mId}
+	</select>
+	
+	<insert id="mJoin" parameterType="member">
+		INSERT INTO MEMBERDTO VALUES (#{mId}, #{mPw}, #{mName}, #{mBirth}, #{mGender},  
+									  #{mEmail}, #{mPhone}, #{mAddr}, #{mProfileName})
+	</insert>
+	
+	<select id="mView" parameterType="String" resultType="member">
+		SELECT * FROM MEMBERDTO WHERE MID = #{mId}
+	</select>
+	
+	<select id="mCount" resultType="int">
+		SELECT COUNT(*) FROM MEMBERDTO
+	</select>
+	
+	<select id="mList" parameterType="paging" resultType="member">
+		SELECT * FROM MEMBERLIST WHERE RN BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="mSearch" parameterType="search" resultType="member">
+		SELECT * FROM MEMBERDTO WHERE ${category} LIKE '%${keyword}%'
+	</select>
+	<!-- # 과 $의 차이
+		# : DB에 데이터 타입에 맞게 입력
+		$ : 입력하는 값을 DB에 그대로 가져가 입력 
+		ex) 문자 타입 입력시 '' 가 들어가지만 이를 없애기 위해 사용
+	 -->
+	<update id="mModify" parameterType="member">
+		UPDATE MEMBERDTO SET 
+		MPW = #{mPw}, MNAME = #{mName}, MBIRTH = #{mBirth}, MGENDER = #{mGender},
+		MEMAIL = #{mEmail}, MPHONE = #{mPhone}, MADDR = #{mAddr}, MPROFILENAME = #{mProfileName}
+		WHERE MID = #{mId}
+	</update>
+	
+	<delete id="mDelete" parameterType="String">
+		DELETE FROM MEMBERDTO WHERE MID = #{mId}
+	</delete>
+	
+	
+	
+	
+	
+</mapper>
+
+
+
+

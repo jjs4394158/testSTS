@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Board">
+
+	<insert id="bWrite" parameterType="board">
+		INSERT INTO BOARDDTO VALUES(B_SEQ.NEXTVAL, #{bWriter}, #{bTitle}, #{bContents}, SYSDATE, 0, #{bFileName})
+	</insert>
+	
+	<select id="bList" resultType="board">
+		SELECT * FROM BOARDDTO ORDER BY BNUM DESC
+	</select>
+	
+	<select id="bView" parameterType="int" resultType="board">
+		SELECT * FROM BOARDDTO WHERE BNUM = #{bNum}
+	</select>
+	
+	<update id="bCount" parameterType="int">
+		UPDATE BOARDDTO SET BHIT = BHIT+1 WHERE BNUM = #{bNum}
+	</update>
+	
+	<update id="bModify" parameterType="board">
+		 UPDATE BOARDDTO
+        SET BWRITER = #{bWriter}, BTITLE = #{bTitle}, BCONTENTS = #{bContents}, BFILENAME = #{bFileName}
+        WHERE BNUM = #{bNum}	
+	</update>
+
+	<delete id="bDelete" parameterType="int">
+		DELETE FROM BOARDDTO WHERE BNUM = #{bNum}
+	</delete>
+	
+	<select id="bCtn" resultType="int">
+		SELECT COUNT(*) FROM BOARDDTO
+	</select>
+	
+	<select id="pList" parameterType="paging" resultType="board">
+		SELECT * FROM BOARDLIST WHERE RN BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="bSearch" parameterType="search" resultType="board">
+		SELECT * FROM BOARDDTO WHERE ${category} LIKE '%${keyword}%'
+	</select>
+
+</mapper>
